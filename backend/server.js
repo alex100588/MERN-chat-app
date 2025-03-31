@@ -9,4 +9,12 @@ app.get("/", (req, res)=>{
     res.send("server ready!")
 })
 
+app.get('/api/auth/login', (req, res)=>{
+    res.send("loginroute")
+})
+
+app.get("/api/logout", (req, res)=>{
+    res.send("logout route")
+})
+
 app.listen(PORT, ()=> console.log(`Server is running on port ${PORT}`))
