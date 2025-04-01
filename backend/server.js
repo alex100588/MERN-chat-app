@@ -1,5 +1,8 @@
 import express from "express"
 import dotenv from "dotenv"
+
+import authRoutes from "./routes/auth.routes.js"
+
 dotenv.config()
 
 const PORT = process.env.PORT || 8000
@@ -9,12 +12,7 @@ app.get("/", (req, res)=>{
     res.send("server ready!")
 })
 
-app.get('/api/auth/login', (req, res)=>{
-    res.send("loginroute")
-})
+app.use("/api/auth", authRoutes)
 
-app.get("/api/logout", (req, res)=>{
-    res.send("logout route")
-})
 
 app.listen(PORT, ()=> console.log(`Server is running on port ${PORT}`))
