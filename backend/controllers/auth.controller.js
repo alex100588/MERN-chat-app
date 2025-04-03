@@ -1,4 +1,10 @@
-export const signup = (req, res)=>{
+export const signup = async(req, res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+    res.send('signup')
     console.log("signup");   
 }
 
