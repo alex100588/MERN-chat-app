@@ -7,13 +7,18 @@ import connectToMongoDB from "./db/connectToMongoDB.js"
 dotenv.config()
 
 const PORT = process.env.PORT || 8000
-
 const app = express()
-app.get("/", (req, res)=>{
-    res.send("server ready!")
-})
 
-app.use("/api/auth", authRoutes)
+
+// to parse the incoming requests with json payloads from req.body
+app.use(express.json())
+
+app.get("/api/auth", authRoutes)
+
+// app.get("/", (req, res)=>{
+//     res.send("server ready!")
+// })
+
 
 
 app.listen(PORT, ()=> {
