@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
+import generateTokenSetCookie from "../utils/generateToken.js";
 
 export const signup = async (req, res) => {
   try {
@@ -33,6 +34,7 @@ export const signup = async (req, res) => {
     });
 
     if (newUser) {
+      generateTokenSetCookie(newUser._id, res)
       // save user to the database
       await newUser.save();
 
@@ -53,8 +55,29 @@ export const signup = async (req, res) => {
   console.log("signup");
 };
 
-export const login = (req, res) => {
-  console.log("login");
+export const login = async (req, res) => {
+  try {
+    const {userName, password} = req.body
+    const user = await User.findOne({userName})
+    const isPasswordCorrect = await bcrypt.compare(password, user?.password || "")
+
+    if(!user || !isPasswordCorrect){
+      return res.status(400).json({error: "Invalid username or password"})
+    }
+
+    generateTokenSetCookie(user._id, res)
+
+     res.status(201).json({
+      _id: user._id,
+      fullName: user.fullName,
+      userName: user.userName,
+      boyProfilePic: user.profilePic,
+    });
+
+  } catch (error) {
+    console.log("Error in login controller", error.message);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 export const logout = (req, res) => {
